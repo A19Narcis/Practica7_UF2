@@ -32,8 +32,12 @@ public class Parte2 {
 
     public static void main(String[] args) {
         float preu = utils.LlegirFloat("Preu: ");
-        String data1 = null, data2 = null, data3 = null, data4 = null, data5 = null, data6 = null;
-        DatesGenerals(data1, data2, data3, data4, data5, data6);
+        String data1 = "01/01/1986";
+        String data2 = "01/01/1992";
+        String data3 = "01/01/1993";
+        String data4 = "01/01/1995";
+        String data5 = "01/01/2010";
+        String data6 = "15/07/2012";
 
         String dataIVA;
         boolean comprovacioData;
@@ -54,16 +58,6 @@ public class Parte2 {
 
         double IVAAplicat = CalcularIVA(preu, tipusIVA, transData, date1, date2, date3, date4, date5, date6);
         System.out.printf("Preu final del producte %.2f €\n", IVAAplicat);
-    }
-
-    //Donar valors a les dates de que fan de marge a la taula
-    static void DatesGenerals(String data1, String data2, String data3, String data4, String data5, String data6) {
-        data1 = "01/01/1986";
-        data2 = "01/01/1992";
-        data3 = "01/01/1993";
-        data4 = "01/01/1995";
-        data5 = "01/01/2010";
-        data6 = "15/07/2012";
     }
 
     //IVA GENERAL

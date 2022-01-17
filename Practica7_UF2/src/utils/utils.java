@@ -1,5 +1,12 @@
 package utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -177,6 +184,35 @@ public class utils {
         }
 
         result = scan.nextLine();
+
+        return result;
+    }
+
+    //Comprovació de la data (SMART)
+    static boolean LlegirData(String data) {
+        boolean dataValida;
+
+        try {
+            LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy").withResolverStyle(ResolverStyle.SMART));
+            dataValida = true;
+        } catch (DateTimeParseException e) {
+            System.out.println("Data no vàlida");
+            dataValida = false;
+        }
+
+        return dataValida;
+    }
+
+    //Passar de String a Date
+    static Date StringAData(String data) {
+        Date result = null;
+
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            result = formato.parse(data);
+        } catch (ParseException ex) {
+            System.out.println("No valid");
+        }
 
         return result;
     }
