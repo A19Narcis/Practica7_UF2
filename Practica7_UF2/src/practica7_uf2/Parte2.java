@@ -20,9 +20,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.utils;
 
 /**
@@ -33,13 +32,8 @@ public class Parte2 {
 
     public static void main(String[] args) {
         float preu = utils.LlegirFloat("Preu: ");
-
-        String data1 = "01/01/1986";
-        String data2 = "01/01/1992";
-        String data3 = "01/01/1993";
-        String data4 = "01/01/1995";
-        String data5 = "01/01/2010";
-        String data6 = "15/07/2012";
+        String data1 = null, data2 = null, data3 = null, data4 = null, data5 = null, data6 = null;
+        DatesGenerals(data1, data2, data3, data4, data5, data6);
 
         String dataIVA;
         boolean comprovacioData;
@@ -50,32 +44,103 @@ public class Parte2 {
 
         Date transData = StringAData(dataIVA);
         Date date1 = StringAData(data1);
-        Date date2 = StringAData(data1);
-        Date date3 = StringAData(data1);
-        Date date4 = StringAData(data1);
-        Date date5 = StringAData(data1);
+        Date date2 = StringAData(data2);
+        Date date3 = StringAData(data3);
+        Date date4 = StringAData(data4);
+        Date date5 = StringAData(data5);
+        Date date6 = StringAData(data6);
 
         int tipusIVA = EleccioIVA();
 
-        float IVAAplicat = CalcularIVA(preu, tipusIVA, transData, date1);
+        double IVAAplicat = CalcularIVA(preu, tipusIVA, transData, date1, date2, date3, date4, date5, date6);
         System.out.printf("Preu final del producte %.2f €\n", IVAAplicat);
     }
 
-    static float CalcularIVA(float preu, int tipusIVA, Date transData, Date data1) {
-        float resultat = 0;
+    //Donar valors a les dates de que fan de marge a la taula
+    static void DatesGenerals(String data1, String data2, String data3, String data4, String data5, String data6) {
+        data1 = "01/01/1986";
+        data2 = "01/01/1992";
+        data3 = "01/01/1993";
+        data4 = "01/01/1995";
+        data5 = "01/01/2010";
+        data6 = "15/07/2012";
+    }
 
-        if (tipusIVA == 1 && transData.after(data1)) {
-            resultat = preu - (float) preu * (float) (21 / 100);
+    //IVA GENERAL
+    static double CalcularIVA1(float preu, int tipusIVA, Date transData, Date date1, Date date2, Date date3, Date date4, Date date5, Date date6) {
+        double resultat = 0;
+
+        if (transData.after(date6) || transData.equals(date6)) {
+            resultat = preu + preu * (double) 21 / 100;
+        } else if (transData.before(date6) && (transData.after(date5) || transData.equals(date5))) {
+            resultat = preu + preu * (double) 18 / 100;
+        } else if (transData.before(date5) && (transData.after(date4) || transData.equals(date4))) {
+            resultat = preu + preu * (double) 16 / 100;
+        } else if (transData.before(date4) && (transData.after(date2) || transData.equals(date2))) {
+            resultat = preu + preu * (double) 15 / 100;
+        } else {
+            resultat = preu + preu * (double) 12 / 100;
         }
 
         return resultat;
     }
 
+    //IVA REDUÏT
+    static double CalcularIVA2(float preu, int tipusIVA, Date transData, Date date1, Date date2, Date date3, Date date4, Date date5, Date date6) {
+        double resultat = 0;
+
+        if (transData.after(date6) || transData.equals(date6)) {
+            resultat = preu + preu * (double) 10 / 100;
+        } else if (transData.before(date6) && (transData.after(date5) || transData.equals(date5))) {
+            resultat = preu + preu * (double) 8 / 100;
+        } else if (transData.before(date5) && (transData.after(date4) || transData.equals(date4))) {
+            resultat = preu + preu * (double) 7 / 100;
+        } else {
+            resultat = preu + preu * (double) 6 / 100;
+        }
+
+        return resultat;
+    }
+
+    //IVA SUPERREDUIT
+    static double CalcularIVA3(float preu, int tipusIVA, Date transData, Date date1, Date date2, Date date3, Date date4, Date date5, Date date6) {
+        double resultat = 0;
+
+        if (transData.after(date4) || transData.equals(date4)) {
+            resultat = preu + preu * (double) 4 / 100;
+        } else if (transData.before(date4) && (transData.after(date3) || transData.equals(date3))) {
+            resultat = preu + preu * (double) 3 / 100;
+        } else {
+            resultat = preu;
+        }
+
+        return resultat;
+    }
+
+    //IVA EXEMPT
+    static double CalcularIVA(float preu, int tipusIVA, Date transData, Date date1, Date date2, Date date3, Date date4, Date date5, Date date6) {
+        double result = 0;
+
+        if (tipusIVA == 1) {
+            result = CalcularIVA1(preu, tipusIVA, transData, date1, date2, date3, date4, date5, date6);
+        } else if (tipusIVA == 2) {
+            result = CalcularIVA2(preu, tipusIVA, transData, date1, date2, date3, date4, date5, date6);
+        } else if (tipusIVA == 3) {
+            result = CalcularIVA3(preu, tipusIVA, transData, date1, date2, date3, date4, date5, date6);
+        } else {
+            result = preu;
+        }
+
+        return result;
+
+    }
+
+    //Comprovació de la data (SMART)
     static boolean LlegirData(String dataIVA) {
         boolean dataValida;
 
         try {
-            LocalDate.parse(dataIVA, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate.parse(dataIVA, DateTimeFormatter.ofPattern("dd/MM/yyyy").withResolverStyle(ResolverStyle.SMART));
             dataValida = true;
         } catch (DateTimeParseException e) {
             System.out.println("Data no vàlida");
@@ -85,6 +150,7 @@ public class Parte2 {
         return dataValida;
     }
 
+    //Passar de String a Date
     static Date StringAData(String dataIVA) {
         Date result = null;
 
@@ -98,6 +164,7 @@ public class Parte2 {
         return result;
     }
 
+    //Veure la seca eleccio(1, 2, 3, 4)
     static int EleccioIVA() {
         int result = 0;
         boolean numValid;
