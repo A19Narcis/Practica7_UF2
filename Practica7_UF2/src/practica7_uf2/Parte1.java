@@ -9,7 +9,7 @@
  */
 package practica7_uf2;
 
-import Utils.utils;
+import utils.utils;
 
 /**
  *

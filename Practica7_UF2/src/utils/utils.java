@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
