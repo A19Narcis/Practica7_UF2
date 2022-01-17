@@ -172,22 +172,16 @@ public class Parte2 {
         do {
             int tipusIVA = utils.LlegirInt("IVA (1-General, 2-Reduït, 3-Superreduit, 4-Exempt): ");
             numValid = true;
-            switch (tipusIVA) {
-                case 1:
-                    result = 1;
-                    break;
-                case 2:
-                    result = 2;
-                    break;
-                case 3:
-                    result = 3;
-                    break;
-                case 4:
-                    result = 4;
-                    break;
-                default:
-                    System.out.println("Opció no vàlida");
-                    numValid = false;
+            if (tipusIVA == 1) {
+                result = 1;
+            } else if (tipusIVA == 2) {
+                result = 2;
+            } else if (tipusIVA == 3) {
+                result = 3;
+            } else if (tipusIVA == 4) {
+                result = 4;
+            } else {
+                numValid = false;
             }
         } while (numValid == false);
 
