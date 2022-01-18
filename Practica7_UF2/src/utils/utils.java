@@ -117,9 +117,12 @@ public class utils {
                 result = scann.nextInt();
                 if (result >= limitMin && result <= limitMax) {
                     correcte = true;
+                } else {
+                    System.out.println("Número fora de rang...");
                 }
             } else {
-                scann.next();
+                System.out.println("Aixó no és un número");
+                scann.nextLine();
             }
         }
         return result;
