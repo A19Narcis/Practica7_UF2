@@ -119,6 +119,7 @@ public class utils {
                     correcte = true;
                 } else {
                     System.out.println("Número fora de rang...");
+                    scann.nextLine();
                 }
             } else {
                 System.out.println("Aixó no és un número");
